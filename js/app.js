@@ -1,20 +1,20 @@
-import { renderSuites, renderCases, renderReport } from './ui.js';
-import './idb.js';
-import './models.js'; // add this line to ensure models are loaded
+// app.js
+
+// Assumes ui.js attached renderSuites, renderCases, renderReport to window
 
 openDB().then(() => console.log("DB initialized"));
 
 document.getElementById('nav-suites').addEventListener('click', () => {
   setActiveNav('nav-suites');
-  renderSuites();
+  window.renderSuites();
 });
 document.getElementById('nav-cases').addEventListener('click', () => {
   setActiveNav('nav-cases');
-  renderCases();
+  window.renderCases();
 });
 document.getElementById('nav-report').addEventListener('click', () => {
   setActiveNav('nav-report');
-  renderReport();
+  window.renderReport();
 });
 
 function setActiveNav(id) {
@@ -23,5 +23,5 @@ function setActiveNav(id) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  renderSuites();
+  window.renderSuites();
 });
