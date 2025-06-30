@@ -34,7 +34,26 @@ function exportExcel(rows, headers, filename = 'test-cases.xlsx') {
   });
 
   // Add data rows
-  rows.forEach(row => sheet.addRow(row));
+  //rows.forEach(row => sheet.addRow(row));
+
+  rows.forEach(row => {
+    const formattedRow = [...row];
+    // Replace <br> or plain dots with line breaks for steps column
+    const stepsIndex = headers.findIndex(h => h.toLowerCase().includes("step"));
+    if (stepsIndex !== -1) {
+      formattedRow[stepsIndex] = formattedRow[stepsIndex]
+        .replace(/<br\s*\/?>/gi, '\n')     // for <br> from HTML
+        .replace(/(\d+)\./g, '$1.');     // for numbered steps like 1. 2. etc.
+    }
+
+    const addedRow = sheet.addRow(formattedRow);
+
+    // Ensure line breaks are shown
+    if (stepsIndex !== -1) {
+      const cell = addedRow.getCell(stepsIndex + 1); // ExcelJS is 1-based index
+      cell.alignment = { wrapText: true };
+    }
+  });
 
   // Auto-size columns based on content
   sheet.columns.forEach(col => {
