@@ -79,7 +79,7 @@ async function renderSuites() {
         description: tr.children[2].firstElementChild.value
       });
       renderSuites();
-    });
+   });
     const delBtn = document.createElement('button');
     delBtn.textContent = 'Delete';
     delBtn.addEventListener('click', async () => {
@@ -240,13 +240,58 @@ function openCreateModal(type) {
   }
 }
 function openPlanModal() {
-  document.getElementById('modal-plan').classList.remove('hidden');
+  const modal = document.getElementById('modal-plan');
+  const container = modal.querySelector('.modal-content');
+  container.innerHTML = `
+    <h2>Test Plan</h2>
+    <p>[Test Plan form coming soon]</p>
+    <button onclick="closeModal('modal-plan')">Close</button>
+  `;
+  modal.classList.remove('hidden');
+  //document.getElementById('modal-plan').classList.remove('hidden');
 }
 function openSuiteModal() {
-  document.getElementById('modal-suite').classList.remove('hidden');
+  const modal = document.getElementById('modal-suite');
+  const container = modal.querySelector('.modal-content');
+
+  // Replace modal content
+  container.innerHTML = `
+    <h2>Test Suite</h2>
+    <div id="suite-form-container"></div>
+    <button type="button" onclick="closeModal('modal-suite')">Close</button>
+  `;
+
+  const formContainer = container.querySelector('#suite-form-container');
+
+  const form = createInlineForm([
+    { name: 'name', type: 'text', placeholder: 'Suite name' },
+    { name: 'description', type: 'text', placeholder: 'Description' }
+  ], async data => {
+    if (!data.name?.trim()) {
+      alert('Please enter a Suite name.');
+      return;
+    }
+
+    await TestSuite.create(data);
+    closeModal('modal-suite');
+    alert('Test Suite added.');
+  }, 'Add Suite');
+
+  formContainer.appendChild(form);
+
+  modal.classList.remove('hidden');
 }
+
 function openExecutionModal() {
-  document.getElementById('modal-execution').classList.remove('hidden');
+  const modal = document.getElementById('modal-execution');
+  const container = modal.querySelector('.modal-content');
+  container.innerHTML = `
+    <h2>Test Execution</h2>
+    <p>[Test Execution form coming soon]</p>
+    <button onclick="closeModal('modal-plan')">Close</button>
+  `;
+  modal.classList.remove('hidden');
+  //document.getElementById('modal-execution').classList.remove('hidden');
 }
 function closeModal(id) {
   document.getElementById(id).classList.add('hidden');

@@ -121,7 +121,7 @@ table textarea {
 }
 
 .dropdown-menu {
-  position: relative;
+  position: absolute;
   background: white;
   list-style: none;
   border: 1px solid #aaa;
@@ -135,9 +135,9 @@ table textarea {
 .dropdown-menu li:hover {
   background: #f5f5f5;
 }
-/* .hidden {
+.hidden {
   display: none;
-} */
+}
 .modal {
   position: fixed;
   top: 0;
@@ -178,5 +178,5 @@ table textarea {
 
 /* This will be added/removed via JS */
 .dropdown.show .dropdown-content {
-  display: flex;
+  display: block;
 }

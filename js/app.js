@@ -40,7 +40,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Default tab
   setActiveNav('nav-create');
-  renderSuites(); // Default to suite creation page
 });
 
 function setActiveNav(id) {
