@@ -13,6 +13,10 @@ header {
 nav {
   background: #f1f1f1;
   padding: 10px 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px; /* optional, cleaner spacing */
 }
 
 nav button {
@@ -21,6 +25,7 @@ nav button {
   border: none;
   background: #ddd;
   cursor: pointer;
+   margin: 0; /* override margin if it was pushing items off */
 }
 
 nav button.active {
@@ -114,8 +119,9 @@ table textarea {
   width: 100%;
   box-sizing: border-box;
 }
+
 .dropdown-menu {
-  position: absolute;
+  position: relative;
   background: white;
   list-style: none;
   border: 1px solid #aaa;
