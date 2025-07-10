@@ -206,3 +206,48 @@ async function renderReport() {
 window.renderSuites = renderSuites;
 window.renderCases = renderCases;
 window.renderReport = renderReport;
+// Create‑button dropdown logic
+const createBtn = document.getElementById('create-btn');
+const createMenu = document.getElementById('create-menu');
+
+createBtn.addEventListener('click', () => createMenu.classList.toggle('hidden'));
+
+// Close menu when clicking outside
+document.addEventListener('click', e => {
+  if (!createBtn.contains(e.target) && !createMenu.contains(e.target)) {
+    createMenu.classList.add('hidden');
+  }
+});
+
+// On selecting a menu item
+createMenu.querySelectorAll('li').forEach(li => {
+  li.addEventListener('click', () => {
+    createMenu.classList.add('hidden');
+    const type = li.dataset.type;
+    openCreateModal(type);
+  });
+});
+
+// Function to open appropriate modal
+function openCreateModal(type) {
+  switch (type) {
+    case 'plan':
+      return openPlanModal();
+    case 'suite':
+      return openSuiteModal();
+    case 'execution':
+      return openExecutionModal();
+  }
+}
+function openPlanModal() {
+  document.getElementById('modal-plan').classList.remove('hidden');
+}
+function openSuiteModal() {
+  document.getElementById('modal-suite').classList.remove('hidden');
+}
+function openExecutionModal() {
+  document.getElementById('modal-execution').classList.remove('hidden');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.add('hidden');
+}
