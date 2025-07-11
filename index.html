@@ -28,32 +28,23 @@
 
   <nav>
     <div class="dropdown">
-      <button id="nav-create">Create ▼</button>
-      <div class="dropdown-content">
-        <a href="#" id="create-plan">Test Plan</a>
-        <a href="#" id="create-suite">Test Suite</a>
-        <a href="#" id="create-execution">Test Execution</a>
-      </div>
+      <button id="create-btn">Create ▼</button>
+      <ul id="create-menu" class="dropdown-content hidden">
+        <li data-type="plan">Test Plan</li>
+        <li data-type="suite">Test Suite</li>
+        <li data-type="execution">Test Execution</li>
+      </ul>
     </div>
     <button id="nav-cases">Test Cases</button>
     <button id="nav-report">Reports</button>
   </nav>
 
 
-  <!-- <nav>
-    
-    <button id="nav-suites" class="active">Suites</button>
-    <button id="nav-cases">Test Cases</button>
-    <button id="nav-report">Reports</button>
-  </nav> -->
-
   <main id="main"></main>
 
-  <div id="modal-suite" class="modal hidden">
-  <div class="modal-content" id="suite-modal-content">
-    <!-- Content is injected dynamically by JS -->
-  </div>
-</div>
+   <div class="modal hidden" id="modal-plan"><div class="modal-content"></div></div>
+  <div class="modal hidden" id="modal-suite"><div class="modal-content"></div></div>
+  <div class="modal hidden" id="modal-execution"><div class="modal-content"></div></div>
 
   <!-- Application scripts (order matters) -->
   <script src="js/idb.js"></script>
@@ -61,26 +52,5 @@
   <script src="js/export.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
-  <div class="modal hidden" id="modal-plan">
-  <div class="modal-content">
-    <h2>Test Plan</h2>
-    <!-- your form fields -->
-    <button onclick="closeModal('modal-plan')">Close</button>
-  </div>
-</div>
-<div class="modal hidden" id="modal-suite">
-  <div class="modal-content">
-    <h2>Test Suite</h2>
-    <!-- form fields -->
-    <button onclick="closeModal('modal-suite')">Close</button>
-  </div>
-</div>
-<div class="modal hidden" id="modal-execution">
-  <div class="modal-content">
-    <h2>Test Execution</h2>
-    <!-- form fields -->
-    <button onclick="closeModal('modal-execution')">Close</button>
-  </div>
-</div>
 </body>
 </html>

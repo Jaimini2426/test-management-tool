@@ -6,6 +6,41 @@ function clearMain() {
   main.innerHTML = '';
 }
 
+function generateId(prefix, count) {
+  return `${prefix}_${String(count + 1).padStart(3, '0')}`;
+}
+
+function createModalForm({ id, title, prefix, fields, onSubmit }) {
+  const modal = document.getElementById(id);
+  const container = modal.querySelector('.modal-content');
+
+  const generatedId = generateId(prefix, Math.floor(Math.random() * 100)); // Replace with real count if needed
+  container.innerHTML = `
+    <h2>${title}</h2>
+    <form id="${id}-form" class="modal-form">
+      <label>ID: <input type="text" name="id" value="${generatedId}" readonly></label>
+      ${fields.map(f => `
+        <label>${f.label}: ${
+          f.type === 'textarea' ? `<textarea name="${f.name}" placeholder="${f.placeholder || ''}"></textarea>`
+          : f.type === 'file' ? `<input type="file" name="${f.name}">`
+          : `<input type="${f.type}" name="${f.name}" placeholder="${f.placeholder || ''}">`
+        }</label>
+      `).join('')}
+      <button type="submit">Submit</button>
+      <button type="button" onclick="closeModal('${id}')">Close</button>
+    </form>
+  `;
+  modal.classList.remove('hidden');
+
+  container.querySelector('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    await onSubmit(data);
+    closeModal(id);
+  });
+}
+
 function createInlineForm(fields, onSubmit, submitText = 'Save') {
   const form = document.createElement('form');
   form.className = 'inline-form';
@@ -46,54 +81,54 @@ function createInlineForm(fields, onSubmit, submitText = 'Save') {
   return form;
 }
 
-async function renderSuites() {
-  clearMain();
-  const suites = await TestSuite.getAll();
-  const div = document.createElement('div');
+// async function renderSuites() {
+//   clearMain();
+//   const suites = await TestSuite.getAll();
+//   const div = document.createElement('div');
 
-  div.append(createInlineForm([
-    { name: 'name', type: 'text', placeholder: 'Suite name' },
-    { name: 'description', type: 'text', placeholder: 'Description' }
-  ], async data => {
-    await TestSuite.create(data);
-    renderSuites();
-  }, 'Add Suite'));
+//  div.append(createInlineForm([
+//     { name: 'name', type: 'text', placeholder: 'Suite name' },
+//     { name: 'description', type: 'text', placeholder: 'Description' }
+//   ], async data => {
+//     await TestSuite.create(data);
+//     renderSuites();
+//   }, 'Add Suite'));
 
-  const table = document.createElement('table');
-  table.innerHTML = `<tr><th>#</th><th>Name</th><th>Description</th><th>Actions</th></tr>`;
+//   const table = document.createElement('table');
+//   table.innerHTML = `<tr><th>#</th><th>Name</th><th>Description</th><th>Actions</th></tr>`;
 
-  suites.forEach((s, i) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${i + 1}</td>
-      <td><input value="${s.name}"></td>
-      <td><input value="${s.description}"></td>
-    `;
-    const actions = document.createElement('td');
-    const saveBtn = document.createElement('button');
-    saveBtn.textContent = 'Save';
-    saveBtn.addEventListener('click', async () => {
-      await TestSuite.update({
-        id: s.id,
-        name: tr.children[1].firstElementChild.value,
-        description: tr.children[2].firstElementChild.value
-      });
-      renderSuites();
-   });
-    const delBtn = document.createElement('button');
-    delBtn.textContent = 'Delete';
-    delBtn.addEventListener('click', async () => {
-      await TestSuite.delete(s.id);
-      renderSuites();
-    });
-    actions.append(saveBtn, delBtn);
-    tr.append(actions);
-    table.append(tr);
-  });
+//   suites.forEach((s, i) => {
+//     const tr = document.createElement('tr');
+//     tr.innerHTML = `
+//       <td>${i + 1}</td>
+//       <td><input value="${s.name}"></td>
+//       <td><input value="${s.description}"></td>
+//     `;
+//     const actions = document.createElement('td');
+//     const saveBtn = document.createElement('button');
+//     saveBtn.textContent = 'Save';
+//     saveBtn.addEventListener('click', async () => {
+//       await TestSuite.update({
+//         id: s.id,
+//         name: tr.children[1].firstElementChild.value,
+//         description: tr.children[2].firstElementChild.value
+//       });
+//       renderSuites();
+//    });
+//     const delBtn = document.createElement('button');
+//     delBtn.textContent = 'Delete';
+//     delBtn.addEventListener('click', async () => {
+//       await TestSuite.delete(s.id);
+//       renderSuites();
+//     });
+//     actions.append(saveBtn, delBtn);
+//     tr.append(actions);
+//     table.append(tr);
+//   });
 
-  div.append(table);
-  main.append(div);
-}
+//   div.append(table);
+//   main.append(div);
+// }
 
 async function renderCases() {
   clearMain();
@@ -203,7 +238,7 @@ async function renderReport() {
 }
 
 // Expose globally
-window.renderSuites = renderSuites;
+//window.renderSuites = renderSuites;
 window.renderCases = renderCases;
 window.renderReport = renderReport;
 // Create‑button dropdown logic
@@ -240,59 +275,73 @@ function openCreateModal(type) {
   }
 }
 function openPlanModal() {
-  const modal = document.getElementById('modal-plan');
-  const container = modal.querySelector('.modal-content');
-  container.innerHTML = `
-    <h2>Test Plan</h2>
-    <p>[Test Plan form coming soon]</p>
-    <button onclick="closeModal('modal-plan')">Close</button>
-  `;
-  modal.classList.remove('hidden');
-  //document.getElementById('modal-plan').classList.remove('hidden');
+  createModalForm({
+    id: 'modal-plan',
+    title: 'Create Test Plan',
+    prefix: 'TP',
+    fields: [
+      { name: 'title', label: 'Title', type: 'text' },
+      { name: 'description', label: 'Description', type: 'text' },
+      { name: 'attachment', label: 'Upload Attachment', type: 'file' },
+      { name: 'link', label: 'Link To', type: 'text', placeholder: 'Link Test Suite, Case, Execution...' }
+    ],
+    onSubmit: async data => {
+      console.log("Test Plan Data:", data);
+      alert("Test Plan created.");
+    }
+  });
 }
 function openSuiteModal() {
-  const modal = document.getElementById('modal-suite');
-  const container = modal.querySelector('.modal-content');
-
-  // Replace modal content
-  container.innerHTML = `
-    <h2>Test Suite</h2>
-    <div id="suite-form-container"></div>
-    <button type="button" onclick="closeModal('modal-suite')">Close</button>
-  `;
-
-  const formContainer = container.querySelector('#suite-form-container');
-
-  const form = createInlineForm([
-    { name: 'name', type: 'text', placeholder: 'Suite name' },
-    { name: 'description', type: 'text', placeholder: 'Description' }
-  ], async data => {
-    if (!data.name?.trim()) {
-      alert('Please enter a Suite name.');
-      return;
+  createModalForm({
+    id: 'modal-suite',
+    title: 'Create Test Suite',
+    prefix: 'TS',
+    fields: [
+      { name: 'title', label: 'Title', type: 'text' },
+      { name: 'description', label: 'Description', type: 'text' },
+      { name: 'attachment', label: 'Upload Attachment', type: 'file' },
+      { name: 'link', label: 'Link To', type: 'text', placeholder: 'Link Test Plan, Case, Execution...' }
+    ],
+    onSubmit: async data => {
+      console.log("Test Suite Data:", data);
+      alert("Test Suite created.");
     }
-
-    await TestSuite.create(data);
-    closeModal('modal-suite');
-    alert('Test Suite added.');
-  }, 'Add Suite');
-
-  formContainer.appendChild(form);
-
-  modal.classList.remove('hidden');
+  });
 }
 
 function openExecutionModal() {
-  const modal = document.getElementById('modal-execution');
-  const container = modal.querySelector('.modal-content');
-  container.innerHTML = `
-    <h2>Test Execution</h2>
-    <p>[Test Execution form coming soon]</p>
-    <button onclick="closeModal('modal-plan')">Close</button>
-  `;
-  modal.classList.remove('hidden');
-  //document.getElementById('modal-execution').classList.remove('hidden');
+  createModalForm({
+    id: 'modal-execution',
+    title: 'Create Test Execution',
+    prefix: 'TE',
+    fields: [
+      { name: 'title', label: 'Title', type: 'text' },
+      { name: 'description', label: 'Description', type: 'text' },
+      { name: 'attachment', label: 'Upload Attachment', type: 'file' },
+      { name: 'link', label: 'Link To', type: 'text', placeholder: 'Link Test Plan, Suite, Case...' }
+    ],
+    onSubmit: async data => {
+      console.log("Test Execution Data:", data);
+      alert("Test Execution created.");
+    }
+  });
 }
 function closeModal(id) {
-  document.getElementById(id).classList.add('hidden');
+  const modal = document.getElementById(id);
+  modal.classList.add('hidden');
+  modal.querySelector('.modal-content').innerHTML = '';
 }
+
+window.addEventListener('click', e => {
+  ['modal-plan', 'modal-suite', 'modal-execution'].forEach(id => {
+    const modal = document.getElementById(id);
+    if (e.target === modal) closeModal(id);
+  });
+});
+
+function openCreateModal(type) {
+  switch (type) {
+    case 'plan': openPlanModal(); break;
+    case 'suite': openSuiteModal(); break;
+    case 'execution': openExecutionModal(); break;
+  }};
