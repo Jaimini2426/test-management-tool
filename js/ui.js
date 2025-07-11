@@ -81,55 +81,6 @@ function createInlineForm(fields, onSubmit, submitText = 'Save') {
   return form;
 }
 
-// async function renderSuites() {
-//   clearMain();
-//   const suites = await TestSuite.getAll();
-//   const div = document.createElement('div');
-
-//  div.append(createInlineForm([
-//     { name: 'name', type: 'text', placeholder: 'Suite name' },
-//     { name: 'description', type: 'text', placeholder: 'Description' }
-//   ], async data => {
-//     await TestSuite.create(data);
-//     renderSuites();
-//   }, 'Add Suite'));
-
-//   const table = document.createElement('table');
-//   table.innerHTML = `<tr><th>#</th><th>Name</th><th>Description</th><th>Actions</th></tr>`;
-
-//   suites.forEach((s, i) => {
-//     const tr = document.createElement('tr');
-//     tr.innerHTML = `
-//       <td>${i + 1}</td>
-//       <td><input value="${s.name}"></td>
-//       <td><input value="${s.description}"></td>
-//     `;
-//     const actions = document.createElement('td');
-//     const saveBtn = document.createElement('button');
-//     saveBtn.textContent = 'Save';
-//     saveBtn.addEventListener('click', async () => {
-//       await TestSuite.update({
-//         id: s.id,
-//         name: tr.children[1].firstElementChild.value,
-//         description: tr.children[2].firstElementChild.value
-//       });
-//       renderSuites();
-//    });
-//     const delBtn = document.createElement('button');
-//     delBtn.textContent = 'Delete';
-//     delBtn.addEventListener('click', async () => {
-//       await TestSuite.delete(s.id);
-//       renderSuites();
-//     });
-//     actions.append(saveBtn, delBtn);
-//     tr.append(actions);
-//     table.append(tr);
-//   });
-
-//   div.append(table);
-//   main.append(div);
-// }
-
 async function renderCases() {
   clearMain();
   const suites = await TestSuite.getAll();

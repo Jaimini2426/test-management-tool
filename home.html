@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Management Tool</title>
+
+  <script>
+    const isGithub = location.hostname.includes('github.io');
+    const repo = 'test-management-tool'; // your GitHub repo name
+    const base = isGithub ? `/${repo}/` : '';
+
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `${base}css/styles.css`;
+    document.head.appendChild(link);
+  </script>
+
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+</head>
+
+ <header class="header">
+    <span class="home-icon" onclick="goHome()">🏠</span>
+    <h1>Welcome to Test Management Tool</h1>
+    <input type="text" placeholder="Search..." class="search-input" />
+    <button onclick="logout()">Logout</button>
+    <span class="notification-icon" onclick="toggleNotifications()">🔔</span>
+  </header>
+
+<body>
+  <header>
+    <h2>Test Management Dashboard</h2>
+  </header>
+
+  <nav>
+    <div class="dropdown">
+      <button id="create-btn">Create ▼</button>
+      <ul id="create-menu" class="dropdown-content hidden">
+        <li data-type="plan">Test Plan</li>
+        <li data-type="suite">Test Suite</li>
+        <li data-type="execution">Test Execution</li>
+      </ul>
+    </div>
+    <button id="nav-cases">Test Cases</button>
+    <button id="nav-report">Reports</button>
+  </nav>
+
+  <div id="notification-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Recent Activities</h2>
+      <ul id="activity-list">
+        
+      </ul>
+      <button onclick="closeModal('notification-modal')">Close</button>
+    </div>
+  </div>
+
+  <div id="modal-plan" class="modal hidden">
+    <div class="modal-content"></div>
+  </div>
+  <div id="modal-suite" class="modal hidden">
+    <div class="modal-content" id="suite-modal-content"></div>
+  </div>
+  <div id="modal-execution" class="modal hidden">
+    <div class="modal-content"></div>
+  </div>
+
+
+  <main id="main"></main>
+
+   <!--<div class="modal hidden" id="modal-plan"><div class="modal-content"></div></div>
+  <div class="modal hidden" id="modal-suite"><div class="modal-content"></div></div>
+  <div class="modal hidden" id="modal-execution"><div class="modal-content"></div></div>-->
+
+  
+  <script src="js/idb.js"></script>
+  <script src="js/models.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+
+  
+  <script>
+    function logout() {
+      localStorage.removeItem('rememberedUser');
+      window.location.href = 'index.html';
+    }
+
+    function goHome() {
+      document.getElementById('main').innerHTML = '<h2>Welcome to the Test Management Tool</h2>';
+    }
+
+    function toggleNotifications() {
+      document.getElementById('notification-modal').classList.toggle('hidden');
+      const list = document.getElementById('activity-list');
+      list.innerHTML = '';
+      const activities = JSON.parse(localStorage.getItem('activities') || '[]');
+      activities.forEach(act => {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="#" onmouseover="highlightEntity('${act.type}')" onclick="navigateTo('${act.type}')">${act.message}</a>`;
+        list.appendChild(li);
+      });
+    }
+
+    function highlightEntity(type) {
+      // Add hover logic if needed
+    }
+
+    function navigateTo(type) {
+      closeModal('notification-modal');
+      if (type === 'suite') renderSuites();
+      else if (type === 'case') renderCases();
+      else if (type === 'report') renderReport();
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      modal.classList.add('hidden');
+      modal.querySelector('.modal-content').innerHTML = '';
+    }
+  </script>
+</body>
+</html>
