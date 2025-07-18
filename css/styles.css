@@ -451,3 +451,73 @@ body {
 .form-container .register-button button:hover {
   background-color: #0056b3;
 }
+
+.register-btn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  text-align: left;
+  display: block;
+}
+
+/* forgot link*/
+.login-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.forgot-link {
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: #007bff;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+.forgot-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.forgot-form label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.forgot-form input {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.forgot-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-link {
+  font-size: 0.9rem;
+  color: #555;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.success-msg {
+  color: green;
+  font-size: 0.9rem;
+}
