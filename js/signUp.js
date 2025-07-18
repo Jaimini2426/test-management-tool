@@ -35,7 +35,10 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
   successElm.textContent = '';
 
   // Validation
-  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dob)) return errElm.textContent = 'Invalid Date format, use DD/MM/YYYY.';
+ if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dob)) {
+  errElm.textContent = 'Please enter DOB in DD/MM/YYYY format.';
+  return;
+}
   if (!/^\d+$/.test(mobile)) return errElm.textContent = 'Mobile no must be numeric.';
   if (pass !== confirmPass) return errElm.textContent = 'Password mismatch.';
   if (captchaInput !== realCaptcha) {
@@ -51,6 +54,19 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
 });
 
 // Basic date of birth entry formatting assistance
-document.getElementById('dob').addEventListener('input', e => {
-  e.target.value = e.target.value.replace(/[^\d\/]/g, '').replace(/(\d\d)(?!\/)/g, '$1/');
+document.getElementById('dob').addEventListener('input', function (e) {
+  let val = this.value;
+
+  // Allow only numbers and slashes
+  val = val.replace(/[^\d/]/g, '');
+
+  // Automatically add slashes as user types
+  if (val.length === 2 || val.length === 5) {
+    if (!val.endsWith('/')) val += '/';
+  }
+
+  // Restrict to max 10 characters (DD/MM/YYYY)
+  val = val.slice(0, 10);
+
+  this.value = val;
 });

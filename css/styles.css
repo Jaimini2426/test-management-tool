@@ -385,14 +385,19 @@ table textarea {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  overflow: auto; /* ✅ allow modal to scroll */
+  padding: 20px;
 }
 
 .modal-content {
   background-color: #fff;
   padding: 20px;
-  min-width: 400px;
+  min-width: 350px;
+  max-width: 500px;
   border-radius: 8px;
   box-shadow: 0 0 10px #000;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .hidden {
