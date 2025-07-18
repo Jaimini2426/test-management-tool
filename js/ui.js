@@ -20,11 +20,10 @@ function createModalForm({ id, title, prefix, fields, onSubmit }) {
     <form id="${id}-form" class="modal-form">
       <label>ID: <input type="text" name="id" value="${generatedId}" readonly></label>
       ${fields.map(f => `
-        <label>${f.label}: ${
-          f.type === 'textarea' ? `<textarea name="${f.name}" placeholder="${f.placeholder || ''}"></textarea>`
-          : f.type === 'file' ? `<input type="file" name="${f.name}">`
-          : `<input type="${f.type}" name="${f.name}" placeholder="${f.placeholder || ''}">`
-        }</label>
+        <label>${f.label}: ${f.type === 'textarea' ? `<textarea name="${f.name}" placeholder="${f.placeholder || ''}"></textarea>`
+      : f.type === 'file' ? `<input type="file" name="${f.name}">`
+        : `<input type="${f.type}" name="${f.name}" placeholder="${f.placeholder || ''}">`
+    }</label>
       `).join('')}
       <button type="submit">Submit</button>
       <button type="button" onclick="closeModal('${id}')">Close</button>
@@ -295,4 +294,5 @@ function openCreateModal(type) {
     case 'plan': openPlanModal(); break;
     case 'suite': openSuiteModal(); break;
     case 'execution': openExecutionModal(); break;
-  }};
+  }
+};

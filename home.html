@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Test Management Tool</title>
@@ -15,18 +16,18 @@
     document.head.appendChild(link);
   </script>
 
- 
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
 </head>
 
- <header class="header">
-    <span class="home-icon" onclick="goHome()">🏠</span>
-    <h1>Welcome to Test Management Tool</h1>
-    <input type="text" placeholder="Search..." class="search-input" />
-    <button onclick="logout()">Logout</button>
-    <span class="notification-icon" onclick="toggleNotifications()">🔔</span>
-  </header>
+<header class="header">
+  <span class="home-icon" onclick="goHome()">🏠</span>
+  <h1>Welcome to Test Management Tool</h1>
+  <input type="text" placeholder="Search..." class="search-input" />
+  <button onclick="logout()">Logout</button>
+  <span class="notification-icon" onclick="toggleNotifications()">🔔</span>
+</header>
 
 <body>
   <header>
@@ -50,7 +51,7 @@
     <div class="modal-content">
       <h2>Recent Activities</h2>
       <ul id="activity-list">
-        
+
       </ul>
       <button onclick="closeModal('notification-modal')">Close</button>
     </div>
@@ -69,18 +70,18 @@
 
   <main id="main"></main>
 
-   <!--<div class="modal hidden" id="modal-plan"><div class="modal-content"></div></div>
+  <!--<div class="modal hidden" id="modal-plan"><div class="modal-content"></div></div>
   <div class="modal hidden" id="modal-suite"><div class="modal-content"></div></div>
   <div class="modal hidden" id="modal-execution"><div class="modal-content"></div></div>-->
 
-  
+
   <script src="js/idb.js"></script>
   <script src="js/models.js"></script>
   <script src="js/export.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
 
-  
+
   <script>
     function logout() {
       localStorage.removeItem('rememberedUser');
@@ -121,4 +122,5 @@
     }
   </script>
 </body>
+
 </html>

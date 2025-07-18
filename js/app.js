@@ -45,9 +45,9 @@ function setActiveNav(id) {
 
 
 window.addEventListener('DOMContentLoaded', () => {
-   const createBtn = document.getElementById('create-btn');
+  const createBtn = document.getElementById('create-btn');
   const createMenu = document.getElementById('create-menu');
-createBtn.addEventListener('click', (e) => {
+  createBtn.addEventListener('click', (e) => {
     e.stopPropagation(); // prevent bubbling to document
     createMenu.classList.toggle('hidden');
   });
@@ -56,7 +56,7 @@ createBtn.addEventListener('click', (e) => {
       createMenu.classList.add('hidden');
     }
   });
-   createMenu.querySelectorAll('li').forEach(li => {
+  createMenu.querySelectorAll('li').forEach(li => {
     li.addEventListener('click', () => {
       createMenu.classList.add('hidden'); // auto close
       const type = li.dataset.type;
